@@ -1,4 +1,5 @@
 import React from "react"
+import { Sequence } from "remotion"
 import { HumanTalkJingle, useJingle } from "./components/HumanTalkJingle"
 
 export const MyComposition = () => {
@@ -11,6 +12,13 @@ export const MyComposition = () => {
 	return (
 		<>
 			<HumanTalkJingle />
+
+			<Sequence
+				from={jingle.durationInFrames}
+				durationInFrames={INTRO_DURATION_IN_FRAMES}
+			>
+				<TalkIntro />
+			</Sequence>
 		</>
 	)
 }
