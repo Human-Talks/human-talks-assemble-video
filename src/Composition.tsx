@@ -29,6 +29,13 @@ export const MyComposition = () => {
 			>
 				<Videos />
 			</Sequence>
+
+			<Sequence
+				from={jingle.durationInFrames + INTRO_DURATION_IN_FRAMES + videos.maxVideoDurationInFrames}
+				durationInFrames={jingle.durationInFrames}
+			>
+				<HumanTalkJingle />
+			</Sequence>
 		</>
 	)
 }
