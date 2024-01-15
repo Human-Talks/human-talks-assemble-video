@@ -1,0 +1,6 @@
+{
+	"extends": "@remotion",
+	"rules": {
+		"semi": [2, "never"]
+	}
+}
