@@ -15,7 +15,15 @@ Using [Remotion](https://www.remotion.dev/), this tools can assemble video, cont
 
 - Install Dependencies : `npm i`
 
-- Start Preview : `npm start`
+- Prepare the assets : 
+  - Run the command: `npm run prepareTalk {talkId}`
+    - `talkId` is the ID of the talk that can be found it its humantalks.com url (i.e: [610](https://humantalks.com/cities/grenoble/events/610))
+  - Open the resulting folder and copy video files into it
+  - Open the resulting `json` file and complete it with videos URLs or additional speakers
+
+- Start Preview :
+  - Edit the `/params.json` file and set the `talk` id
+  - Run the command: `npm start`
 
 - Render video : `npm run build`
 
