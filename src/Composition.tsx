@@ -1,5 +1,16 @@
 import React from "react"
+import { HumanTalkJingle, useJingle } from "./components/HumanTalkJingle"
 
 export const MyComposition = () => {
-	return null
+	const jingle = useJingle()
+
+	if (!jingle) {
+		return null
+	}
+
+	return (
+		<>
+			<HumanTalkJingle />
+		</>
+	)
 }
