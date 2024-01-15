@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react"
 import { TalkConfig, TalkJson } from "../../types/TalkConfig"
-import { getInputProps, staticFile } from "remotion"
+import { continueRender, delayRender, getInputProps, staticFile } from "remotion"
 import { getVideoMetadata } from "@remotion/media-utils"
 import { TalkVideo } from "../../types/TalkVideo"
 import { toDurationInFrames } from "../durationConvertion"
 
 export const useTalkConfig = () => {
   const [talkConfig, setTalkConfig] = useState<TalkConfig | undefined>(undefined)
+  const [handle] = useState(() => delayRender())
 
   useEffect(() => {
     const doThing = async () => {
@@ -18,10 +19,11 @@ export const useTalkConfig = () => {
         ...config,
         videos
       })
+      continueRender(handle)
     }
 
     doThing()
-  }, [])
+  }, [handle])
 
   if (!talkConfig) {
     return null
