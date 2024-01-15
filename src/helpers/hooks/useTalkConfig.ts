@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react"
-import { TalkConfig } from "../../types/TalkConfig"
+import { TalkConfig, TalkJson } from "../../types/TalkConfig"
 import { getInputProps, staticFile } from "remotion"
+import { getVideoMetadata } from "@remotion/media-utils"
+import { TalkVideo } from "../../types/TalkVideo"
+import { toDurationInFrames } from "../durationConvertion"
 
 export const useTalkConfig = () => {
   const [talkConfig, setTalkConfig] = useState<TalkConfig | undefined>(undefined)
@@ -9,7 +12,12 @@ export const useTalkConfig = () => {
     const doThing = async () => {
       const config = await fetchTalkConfig()
 
-      setTalkConfig(config)
+      const videos = await extractVideosMetadata(config.videos)
+
+      setTalkConfig({
+        ...config,
+        videos
+      })
     }
 
     doThing()
@@ -31,7 +39,23 @@ const fetchTalkConfig = async () => {
   const configResult = await fetch(talkConfigFile)
   const configString = await configResult.text()
 
-  const config = JSON.parse(configString) as TalkConfig
+  const config = JSON.parse(configString) as TalkJson
 
   return config
+}
+
+const extractVideosMetadata = async (videos: string[]) => {
+  const output: TalkVideo[] = []
+  for (const video of videos) {
+    const videoFile = staticFile(video)
+    const metadata = await getVideoMetadata(videoFile)
+
+    output.push({
+      src: videoFile,
+      durationInSeconds: metadata.durationInSeconds,
+      durationInFrames: toDurationInFrames(metadata.durationInSeconds)
+    })
+  }
+
+  return output
 }
