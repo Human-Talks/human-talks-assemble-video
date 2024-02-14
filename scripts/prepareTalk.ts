@@ -6,7 +6,7 @@ const TALK_BASE_URL = 'https://humantalks.com/talks'
 
 export const prepareTalk = async (talkId: string, sponsor?: string) => {
   const pageContent = await fetchTalk(talkId)
-  const talk = parseTalk(pageContent, sponsor)
+  const talk = parseTalk(pageContent, talkId, sponsor)
 
   const talkConfigPath = `./public/talks/${talkId}/talk.json`
   await ensureFile(talkConfigPath)
@@ -29,11 +29,13 @@ const fetchTalk = async (talkId: string): Promise<string> => {
   return pageContent
 }
 
-const parseTalk = (html: string, sponsor?: string): Talk => {
+const parseTalk = (html: string, talkId: string, sponsor?: string): Talk => {
   const root = parse(html)
   const title = root.querySelector('h1')?.text ?? ''
   const date = root.querySelector('.date')?.text ?? ''
   const speakerName = root.querySelector('.speaker_name a')?.text ?? ''
+  const speakerUrl = root.querySelector('.speaker_name a')!
+  const speakerId = speakerUrl.getAttribute('href')?.match(/https:\/\/news.humancoders.com\/users\/([0-9]*)/)?.[1] ?? '0000'
   const description = root.querySelectorAll('p')?.slice(0,-1).flatMap(s => s.text).join('\n')
   const city = root.querySelector('.city a')?.text ?? ''
   const place = sponsor ?? root.querySelector('.location address strong')?.text ?? ''
@@ -43,9 +45,9 @@ const parseTalk = (html: string, sponsor?: string): Talk => {
     description,
     speakers: [
       {
-        id: '15271',
+        id: speakerId,
         name: speakerName,
-        pic: 'talks/1903/15271.jpg'
+        pic: `talks/${talkId}/${speakerId}.jpg`
       }
     ],
     eventInfo: {
