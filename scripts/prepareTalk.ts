@@ -56,7 +56,7 @@ const parseTalk = (html: string, talkId: string, sponsor?: string): Talk => {
       place
     },
     videos: [
-      ""
+      `talks/${talkId}/video1.mp4`
     ]
   }
 }
