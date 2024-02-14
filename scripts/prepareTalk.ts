@@ -3,6 +3,7 @@ import { ensureFile, writeFile } from 'fs-extra'
 import { default as sanitize } from 'sanitize-filename'
 
 const TALK_BASE_URL = 'https://humantalks.com/talks'
+const SPEAKER_BASE_URL = 'https://news.humancoders.com/users'
 
 export const prepareTalk = async (talkId: string, sponsor?: string) => {
   const pageContent = await fetchTalk(talkId)
@@ -17,6 +18,8 @@ export const prepareTalk = async (talkId: string, sponsor?: string) => {
   const talkConfigText = JSON.stringify(talk, undefined, 2)
 
   await writeFile(talkConfigPath, talkConfigText, 'utf-8')
+
+  await downloadSpeakersPictures(talk)
   
   console.log('Talk template created at:', talkConfigPath)
 }
@@ -59,6 +62,40 @@ const parseTalk = (html: string, talkId: string, sponsor?: string): Talk => {
       `talks/${talkId}/video1.mp4`
     ]
   }
+}
+
+const downloadSpeakersPictures = async (talk: Talk) => {
+  for (const speaker of talk.speakers) {
+    const destinationPath = `./public/${speaker.pic}`
+
+    const speakerImageUrl = await fetchSpeakerImageUrl(speaker.id)
+
+    const response = await fetch(speakerImageUrl)
+
+    const imageBlob = await response.blob()
+
+    const buffer = Buffer.from( await imageBlob.arrayBuffer() )
+
+    await writeFile(destinationPath, buffer)
+  }
+}
+
+const fetchSpeakerImageUrl = async (speakerId: string) => {
+  const pageContent = await fetchSpeaker(speakerId)
+
+  const root = parse(pageContent)
+
+  const speakerImageUrl = root.querySelector('.avatar img')?.getAttribute('src') ?? ''
+
+  return speakerImageUrl
+}
+
+const fetchSpeaker = async (speakerId: string): Promise<string> => {
+  const talkUrl = `${SPEAKER_BASE_URL}/${speakerId}`
+  const page = await fetch(talkUrl)
+  const pageContent = await page.text()
+
+  return pageContent
 }
 
 interface Talk {
