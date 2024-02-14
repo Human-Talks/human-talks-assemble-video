@@ -1,5 +1,6 @@
 import { parse } from 'node-html-parser'
 import { ensureFile, writeFile } from 'fs-extra'
+import { default as sanitize } from 'sanitize-filename'
 
 const TALK_BASE_URL = 'https://humantalks.com/talks'
 
@@ -9,6 +10,9 @@ export const prepareTalk = async (talkId: string) => {
 
   const talkConfigPath = `./public/talks/${talkId}/talk.json`
   await ensureFile(talkConfigPath)
+
+  const talkHint = `./public/talks/${talkId}/${sanitize(talk.title)}.temp`
+  await ensureFile(talkHint)
 
   const talkConfigText = JSON.stringify(talk, undefined, 2)
 
