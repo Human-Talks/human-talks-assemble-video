@@ -1,5 +1,5 @@
 import { parse } from 'node-html-parser'
-import { ensureFile, writeFile } from 'fs-extra'
+import { copyFile, ensureFile, writeFile } from 'fs-extra'
 import { default as sanitize } from 'sanitize-filename'
 
 const TALK_BASE_URL = 'https://humantalks.com/talks'
@@ -71,6 +71,14 @@ const downloadSpeakersPictures = async (talk: Talk) => {
     const speakerImageUrl = await fetchSpeakerImageUrl(speaker.id)
 
     const response = await fetch(speakerImageUrl)
+
+    // Hack: Si un gravatar a une date Last-Modified qui date de 1984
+    // alors il s'agit de l'avatar par défaut de Gravatar
+    if (response.headers.get('Last-Modified') === 'Wed, 11 Jan 1984 08:00:00 GMT') {
+      console.log('Replace Gravatar by default avatar')
+      await copyFile('scripts/default_avatar.png', destinationPath)
+      return
+    }
 
     const imageBlob = await response.blob()
 
