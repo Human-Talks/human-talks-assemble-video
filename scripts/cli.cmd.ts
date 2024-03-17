@@ -1,5 +1,6 @@
 import { Command } from 'commander'
 import { prepareTalk } from './prepareTalk'
+import { prepareEvent } from './prepareEvent'
 
 async function main(): Promise<void> {
   const program = new Command()
@@ -19,6 +20,19 @@ async function main(): Promise<void> {
         console.info(`Prepare talk ${talkId}`)
 
         await prepareTalk(talkId)
+      })
+    )
+
+  program
+    .command('prepareEvent')
+    .description('Prepare given event')
+    .argument('<cityName>', 'city name (i.e. grenoble)')
+    .argument('<eventId>', 'event id')
+    .action(
+      handleErrors(async (cityName: string, eventId: string) => {
+        console.info(`Prepare event ${eventId}`)
+
+        await prepareEvent(cityName, eventId)
       })
     )
 

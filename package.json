@@ -8,6 +8,7 @@
     "build:scripts": "tsc --project scripts",
     "thumbnail": "remotion still HumanTalksAssembleThumbnail out/thumbnail.png --props=./params.json",
     "prepareTalk": "npm run build:scripts && node ./scripts/dist/cli.cmd.js prepare",
+    "prepareEvent": "npm run build:scripts && node ./scripts/dist/cli.cmd.js prepareEvent",
     "upgrade": "remotion upgrade",
     "test": "eslint src --ext ts,tsx,js,jsx && tsc"
   },

@@ -4,9 +4,9 @@ import { default as sanitize } from 'sanitize-filename'
 
 const TALK_BASE_URL = 'https://humantalks.com/talks'
 
-export const prepareTalk = async (talkId: string) => {
+export const prepareTalk = async (talkId: string, sponsor?: string) => {
   const pageContent = await fetchTalk(talkId)
-  const talk = parseTalk(pageContent)
+  const talk = parseTalk(pageContent, sponsor)
 
   const talkConfigPath = `./public/talks/${talkId}/talk.json`
   await ensureFile(talkConfigPath)
@@ -29,13 +29,14 @@ const fetchTalk = async (talkId: string): Promise<string> => {
   return pageContent
 }
 
-const parseTalk = (html: string): Talk => {
+const parseTalk = (html: string, sponsor?: string): Talk => {
   const root = parse(html)
   const title = root.querySelector('h1')?.text ?? ''
   const date = root.querySelector('.date')?.text ?? ''
   const speakerName = root.querySelector('.speaker_name a')?.text ?? ''
   const description = root.querySelectorAll('p')?.slice(0,-1).flatMap(s => s.text).join('\n')
   const city = root.querySelector('.city a')?.text ?? ''
+  const place = sponsor ?? root.querySelector('.location address strong')?.text ?? ''
 
   return {
     title,
@@ -50,7 +51,7 @@ const parseTalk = (html: string): Talk => {
     eventInfo: {
       city,
       date,
-      place: 'SOME PLACE'
+      place
     },
     videos: [
       ""
