@@ -50,7 +50,7 @@ const parseTalk = (html: string, talkId: string, sponsor?: string): Talk => {
       {
         id: speakerId,
         name: speakerName,
-        pic: `talks/${talkId}/${speakerId}.jpg`
+        pic: `talks/${talkId}/speaker1.jpg`
       }
     ],
     eventInfo: {
