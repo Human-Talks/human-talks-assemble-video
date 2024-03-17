@@ -40,7 +40,7 @@ export const useVideos = () => {
     return null
   }
 
-  const maxVideoDurationInFrames = Math.max(...talkConfig.videos.map(v => v.durationInFrames))
+  const maxVideoDurationInFrames = Math.max(...talkConfig.videos.map(v => v.durationInFrames), 0)
 
   return {
     videos: talkConfig.videos,

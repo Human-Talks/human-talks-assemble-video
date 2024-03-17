@@ -49,14 +49,18 @@ const fetchTalkConfig = async () => {
 const extractVideosMetadata = async (videos: string[]) => {
   const output: TalkVideo[] = []
   for (const video of videos) {
-    const videoFile = staticFile(video)
-    const metadata = await getVideoMetadata(videoFile)
-
-    output.push({
-      src: videoFile,
-      durationInSeconds: metadata.durationInSeconds,
-      durationInFrames: toDurationInFrames(metadata.durationInSeconds)
-    })
+    try {
+      const videoFile = staticFile(video)
+      const metadata = await getVideoMetadata(videoFile)
+  
+      output.push({
+        src: videoFile,
+        durationInSeconds: metadata.durationInSeconds,
+        durationInFrames: toDurationInFrames(metadata.durationInSeconds)
+      })
+    } catch (e) {
+      console.warn('Missing Video, may be normal when generating thumbnail')
+    }
   }
 
   return output
