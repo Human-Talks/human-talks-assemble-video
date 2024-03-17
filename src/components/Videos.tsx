@@ -1,14 +1,17 @@
 import React from "react"
-import { AbsoluteFill, OffthreadVideo, Sequence } from "remotion"
+import { AbsoluteFill, OffthreadVideo, Sequence, useCurrentFrame } from "remotion"
 
 import { useTalkConfig } from "../helpers/hooks/useTalkConfig"
 
 export const Videos = () => {
   const videos = useVideos()
+  const frame = useCurrentFrame()
 
   if (!videos) {
     return null
   }
+
+  console.log('Current frame is', frame)
 
   return (
   <>
