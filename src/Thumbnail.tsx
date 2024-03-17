@@ -65,7 +65,7 @@ export const MyThumbnail = () => {
         position: "absolute",
         color: "#FFFFFF",
         fontFamily,
-        fontSize: "30px",
+        fontSize: "50px",
         fontWeight: 600,
         bottom: '10px',
         left: '20px',
@@ -85,9 +85,8 @@ const Speakers = ({talkConfig}: {talkConfig: TalkConfig}) => {
 }
 
 const SpeakerItem = ({speaker}: {speaker: Speaker}) => {
-  const totalWitdh = 450
-  const picWitdh = 280
-  const titleOffset = picWitdh/8
+  const totalWitdh = 500
+  const picWitdh = 480
   return (
     <>
       <div
@@ -95,7 +94,7 @@ const SpeakerItem = ({speaker}: {speaker: Speaker}) => {
           position: "absolute",
           color: "#FFFFFF",
           fontFamily,
-          fontSize: "40px",
+          fontSize: "50px",
           fontWeight: 600,
           top: '300px',
           right: '120px',
@@ -116,7 +115,7 @@ const SpeakerItem = ({speaker}: {speaker: Speaker}) => {
         />
         <div
           style={{
-            marginRight: `${titleOffset}px`,
+            textAlign: "center",
             marginBottom: '10px'
           }}
         >
