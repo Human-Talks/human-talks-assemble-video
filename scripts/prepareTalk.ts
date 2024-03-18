@@ -13,7 +13,7 @@ export const prepareTalk = async (talkId: string, sponsor?: string) => {
   await ensureFile(talkConfigPath)
 
   const talkHint = `./public/talks/${talkId}/${sanitize(talk.title)}.temp`
-  await ensureFile(talkHint)
+  await writeFile(talkHint, talk.description, 'utf-8')
 
   const talkConfigText = JSON.stringify(talk, undefined, 2)
 
