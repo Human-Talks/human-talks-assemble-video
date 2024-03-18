@@ -11,6 +11,9 @@ export const prepareEvent = async (cityName:string, eventId: string) => {
   for (const talkId of event.talks) {
     await prepareTalk(talkId, event.sponsor)
   }
+
+  console.log('\nTo generate thumbnails for this event, please run:')
+  console.log(`npm run thumbnails ${event.talks.join(',')}\n`)
 }
 
 const fetchEvent = async (cityName: string, eventId: string): Promise<string> => {
