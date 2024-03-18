@@ -9,6 +9,7 @@
         "noEmit": false,
         "lib": ["ES2021"],
         "allowJs": false,
-        "emitDeclarationOnly": false
+        "emitDeclarationOnly": false,
+        "esModuleInterop": true
     }
 }

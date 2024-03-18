@@ -6,7 +6,10 @@
     "start": "remotion studio --props=./params.json",
     "build": "remotion render HumanTalksAssembleVideo out/video.mp4 --props=./params.json",
     "build:scripts": "tsc --project scripts",
+    "thumbnail": "remotion still HumanTalksAssembleThumbnail out/thumbnail.png --props=./params.json",
     "prepareTalk": "npm run build:scripts && node ./scripts/dist/cli.cmd.js prepare",
+    "prepareEvent": "npm run build:scripts && node ./scripts/dist/cli.cmd.js prepareEvent",
+    "thumbnails": "npm run build:scripts && node ./scripts/dist/cli.cmd.js generateThumbnails",
     "upgrade": "remotion upgrade",
     "test": "eslint src --ext ts,tsx,js,jsx && tsc"
   },
@@ -30,6 +33,7 @@
     "fs-extra": "^11.2.0",
     "node-html-parser": "^6.1.12",
     "prettier": "^2.8.8",
+    "sanitize-filename": "^1.6.3",
     "typescript": "^4.9.4"
   },
   "packageManager": "npm@10.2.3"
