@@ -1,6 +1,7 @@
 import { Command } from 'commander'
 import { prepareTalk } from './prepareTalk'
 import { prepareEvent } from './prepareEvent'
+import { generateThumbnails } from './generateTumbnails'
 
 async function main(): Promise<void> {
   const program = new Command()
@@ -36,6 +37,18 @@ async function main(): Promise<void> {
       })
     )
 
+  program
+    .command('generateThumbnails')
+    .description('Render thumbnails for given talks')
+    .argument('<talkIds>', 'list of talks ids (i.e. 1337,1338,1339)', commaSeparatedList)
+    .action(
+      handleErrors(async (talkIds: string[]) => {
+        console.info(`Prepare talks ${talkIds.join('-')}`)
+
+        await generateThumbnails(talkIds)
+      })
+    )
+
   await program.parseAsync()
 }
 
@@ -49,6 +62,10 @@ const handleErrors = <T extends unknown[]>(asyncFn: AsyncVoidFunction<T>) => {
       process.exit(1)
     }
   }
+}
+
+const commaSeparatedList = (value: string) => {
+  return value.split(',')
 }
 
 const errorColor = (str: string): string => {
